@@ -201,10 +201,6 @@ VALUES ("Anne Hathaway", "Selina Kyle", 3);
 SELECT movies.title, movies.year_released, movies.mpaa_rating, studios.name
 FROM movies INNER JOIN studios ON studios.id = movies.studio_id;
 
--- Batman Begins          2005           PG-13  Warner Bros.
--- The Dark Knight        2008           PG-13  Warner Bros.
--- The Dark Knight Rises  2012           PG-13  Warner Bros.
-
 -- Prints a header for the cast output
 .print ""
 .print "Top Cast"
