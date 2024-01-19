@@ -49,13 +49,16 @@
 --   is a reserved word in sqlite and will break your database! Instead, 
 --   think of a better word to describe this concept; i.e. the relationship 
 --   between an actor and the movie in which they play a part.
+
 -- 2. Execution of the domain model (CREATE TABLE) - 4 points
 -- - Follow best practices for table and column names
 -- - Use correct data column types (i.e. TEXT/INTEGER)
 -- - Use of the `model_id` naming convention for foreign key columns
+
 -- 3. Insertion of data (INSERT statements) - 4 points
 -- - Insert data into all the tables you've created
 -- - It actually works, i.e. proper INSERT syntax
+
 -- 4. "The report" (SELECT statements) - 6 points
 -- - Write 2 `SELECT` statements to produce something similar to the
 --   sample output below - 1 for movies and 1 for cast. You will need
@@ -104,14 +107,89 @@
 .headers off
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
--- TODO!
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS top_casts;
+DROP TABLE IF EXISTS studios;
 
 -- Create new tables, according to your domain model
--- TODO!
+CREATE TABLE studios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+
+CREATE TABLE movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    year_released INTEGER,
+    mpaa_rating TEXT,
+    studio_id INTEGER
+);
+
+CREATE TABLE top_casts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_name TEXT,
+    character_name TEXT,
+    movie_id INTEGER
+);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
--- TODO!
+INSERT INTO studios (name)
+VALUES ("Warner Bros.");
+
+INSERT INTO movies (title, year_released, mpaa_rating, studio_id) 
+VALUES ("Batman Begins", 2005, "PG-13", 1);
+
+INSERT INTO movies (title, year_released, mpaa_rating, studio_id) 
+VALUES ("The Dark Knight", 2008, "PG-13", 1);
+
+INSERT INTO movies (title, year_released, mpaa_rating, studio_id) 
+VALUES ("The Dark Knight Rises", 2012, "PG-13", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Christian Bale", "Bruce Wayne", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Michael Caine", "Alfred", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Liam Neeson", "Ra's Al Ghul", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Katie Holmes", "Rachel Dawes", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Gary Oldman", "Commissioner Gordon", 1);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Christian Bale", "Bruce Wayne", 2);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Heath Ledger", "Joker", 2);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Aaron Eckhart", "Harvey Dent", 2);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Michael Caine", "Alfred",2);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Maggie Gyllenhaal", "Rachel Dawes",2);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Christian Bale", "Bruce Wayne", 3);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Gary Oldman", "Commissioner Gordon", 3);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Tom Hardy", "Bane", 3);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Joseph Gordon-Levitt", "John Blake", 3);
+
+INSERT INTO top_casts (actor_name, character_name, movie_id) 
+VALUES ("Anne Hathaway", "Selina Kyle", 3);
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -119,7 +197,13 @@
 .print ""
 
 -- The SQL statement for the movies output
--- TODO!
+
+SELECT movies.title, movies.year_released, movies.mpaa_rating, studios.name
+FROM movies INNER JOIN studios ON studios.id = movies.studio_id;
+
+-- Batman Begins          2005           PG-13  Warner Bros.
+-- The Dark Knight        2008           PG-13  Warner Bros.
+-- The Dark Knight Rises  2012           PG-13  Warner Bros.
 
 -- Prints a header for the cast output
 .print ""
@@ -127,6 +211,6 @@
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
--- TODO!
+SELECT movies.title, top_casts.actor_name, top_casts.character_name 
+FROM top_casts INNER JOIN movies ON movies.id = top_casts.movie_id;
